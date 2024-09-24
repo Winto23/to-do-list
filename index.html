@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List</title>
+    <link rel="icon" href="images/icon.png" />
+    <!-- font awsome cdn -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- bootstrap cdn  -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- css link  -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="w-75 mx-auto main my-4 ff-moderne p-5">
+      <div>
+        <h3>To do list</h3>
+        <div class="d-flex">
+          <input class="rounded-2 p-1" type="text" id="input" />
+          <button onclick="addItem()" class="btn btn-primary ms-3" id="btn1">
+            Add Item<i class="fa-solid fa-pen ms-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <ul></ul>
+      <h3 id="notting">Notting here!</h3>
+    </div>
+
+    <script>
+      function addItem() {
+        const input = document.getElementById("input");
+        const item = document.createElement("li");
+        const del_button = document.createElement("button");
+
+        const content = document.createTextNode(input.value);
+        item.appendChild(content);
+
+        input.value = "";
+
+        const ul = document.querySelector("ul");
+        ul.appendChild(item);
+
+        item.style.padding = "10px";
+        document.getElementById("notting").style.display = "none";
+
+        del_button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        del_button.onclick = function () {
+          item.remove();
+          saveItems();
+        };
+        item.appendChild(del_button);
+        del_button.style.marginLeft = "10px";
+        del_button.style.borderRadius = "5px";
+        del_button.style.color = "red";
+        saveItems();
+      }
+      function saveItems() {
+        const saved_items = [];
+        const ul = document.querySelector("ul");
+        ul.querySelectorAll("li").forEach((li) => {
+          saved_items.push(li.firstChild.textContent);
+        });
+        localStorage.setItem("todoList", JSON.stringify(saved_items));
+      }
+      window.onload = function () {
+        const savedItems = JSON.parse(localStorage.getItem("todoList")) || [];
+        const ul = document.querySelector("ul");
+
+        if (savedItems.length > 0) {
+          document.getElementById("notting").style.display = "none";
+          savedItems.forEach((itemText) => {
+            const item = document.createElement("li");
+            item.textContent = itemText;
+            item.style.padding = "10px";
+
+            const del_button = document.createElement("button");
+            del_button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            del_button.onclick = function () {
+              item.remove();
+              saveItems();
+              checkIfEmpty();
+            };
+            item.appendChild(del_button);
+            del_button.style.marginLeft = "10px";
+            del_button.style.borderRadius = "5px";
+            del_button.style.color = "red";
+
+            ul.appendChild(item);
+          });
+        }
+      };
+
+      function checkIfEmpty() {
+        const ul = document.querySelector("ul");
+        if (ul.children.length === 0) {
+          document.getElementById("notting").style.display = "block";
+        }
+      }
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

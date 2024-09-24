@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap");
+.ff-moderne {
+  font-family: "Playwrite FR Moderne", cursive;
+}
+body{
+    background-color: #E6E1D2;
+}
+.main{
+    background-color: #F7F7F4;
+    box-shadow: 3px 3px 3px 3px black;
+}
